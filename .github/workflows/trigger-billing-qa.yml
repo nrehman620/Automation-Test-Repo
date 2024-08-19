@@ -21,7 +21,7 @@ jobs:
             const labelToCheck = 'run-automation-test'; // the label to check
             const prLabels = context.payload.pull_request.labels.map(label => label.name);
             if (prLabels.includes(labelToCheck)) {
-              const repoOwner = 'OsamaRabie'; // replace with your GitHub username or organization
+              const repoOwner = 'Tap-Payments'; // replace with your GitHub username or organization
               const apiRepo = 'Billing-QA';
               const workflow = 'run-tests.yml'; // the workflow file name in Billing-QA
               const branch = 'main'; // branch of the Billing-QA repo to run the workflow on
