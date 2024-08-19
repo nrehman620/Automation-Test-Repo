@@ -25,7 +25,7 @@ jobs:
               const apiRepo = 'Billing-QA';
               const workflow = 'run-tests.yml'; // the workflow file name in Billing-QA
               const branch = 'main'; // branch of the Billing-QA repo to run the workflow on
-              const response = await github.actions.createWorkflowDispatch({
+              const response = await github.rest.actions.createWorkflowDispatch({
                 owner: repoOwner,
                 repo: apiRepo,
                 workflow_id: workflow,
