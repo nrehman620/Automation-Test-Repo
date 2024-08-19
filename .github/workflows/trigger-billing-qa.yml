@@ -1,0 +1,40 @@
+name: Trigger Billing-QA Tests
+
+on:
+  pull_request:
+    branches:
+      - sandbox
+    types:
+      - labeled # Trigger this workflow when a label is added
+
+jobs:
+  trigger-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the goBilling Repository
+        uses: actions/checkout@v3
+
+      - name: Check for label and trigger Billing-QA Workflow
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const labelToCheck = 'run-automation-test'; // the label to check
+            const prLabels = context.payload.pull_request.labels.map(label => label.name);
+            if (prLabels.includes(labelToCheck)) {
+              const repoOwner = 'OsamaRabie'; // replace with your GitHub username or organization
+              const apiRepo = 'Billing-QA';
+              const workflow = 'run-tests.yml'; // the workflow file name in Billing-QA
+              const branch = 'main'; // branch of the Billing-QA repo to run the workflow on
+              const response = await github.actions.createWorkflowDispatch({
+                owner: repoOwner,
+                repo: apiRepo,
+                workflow_id: workflow,
+                ref: branch,
+                inputs: {
+                  pr_branch: context.payload.pull_request.head.ref
+                }
+              });
+              console.log(response);
+            } else {
+              console.log(`Label "${labelToCheck}" not found. Workflow not triggered.`);
+            }
