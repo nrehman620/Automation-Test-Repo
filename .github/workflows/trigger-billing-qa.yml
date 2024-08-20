@@ -38,3 +38,5 @@ jobs:
             } else {
               console.log(`Label "${labelToCheck}" not found. Workflow not triggered.`);
             }
+      env:
+        MY_SECRET_TOKEN: ${{ secrets.MY_SECRET_TOKEN }}
