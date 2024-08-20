@@ -16,6 +16,8 @@ jobs:
 
       - name: Check for label and trigger Billing-QA Workflow
         uses: actions/github-script@v6
+        env:
+          MY_SECRET_TOKEN: ${{ secrets.MY_SECRET_TOKEN }}
         with:
           script: |
             const labelToCheck = 'run-automation-test'; // the label to check
@@ -32,11 +34,12 @@ jobs:
                 ref: branch,
                 inputs: {
                   pr_branch: context.payload.pull_request.head.ref
+                },
+                headers: {
+                  authorization: `token ${process.env.MY_SECRET_TOKEN}`
                 }
               });
               console.log(response);
             } else {
               console.log(`Label "${labelToCheck}" not found. Workflow not triggered.`);
             }
-      env:
-        MY_SECRET_TOKEN: ${{ secrets.MY_SECRET_TOKEN }}
